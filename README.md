@@ -9,3 +9,7 @@ Lists of Papers:
 3. Margarita Rubio, José A. Carrasco-Gallegoy,2014:"Basel I, II, and III: A Welfare Analysis using a DSGE Model"
 
 4. Frederic Boissay,Fabrice Collard,Frank Smets,2016:" Booms and Banking Crises" ,JPE,vol. 124, no. 2
+
+5. Bernanke, B., Gertler, M. and S. Gilchrist (1999), ìThe Önancial accelerator in a quantitative business cycle frameworkî, in J. Taylor and M. Woodford (eds.), Handbook of Macroeconomics, North Holland, p. 1341-1393.
+
+6. Bilbiie, F. O., Ghironi, F., & Melitz, M. J. (2012). Endogenous entry, product variety, and business cycles. Journal of Political Economy, 120(2), 304-345.
