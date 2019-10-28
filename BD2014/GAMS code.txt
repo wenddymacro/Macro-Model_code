@@ -1,0 +1,1050 @@
+* uk_h10_UNM_012.gms
+*@Keshab Bhattarai, University of Hull, UK, May 2012.
+$Title A ten sector multi-household dynamic general equilibrium with unemployment for The UK Economy
+
+* Result set up file
+**=========================================================================================
+FILE RES /Match2.TXT/; RES.PW = 20000; RES.ND =4; RES.LW = 10; RES.NW = 10; RES.LJ =1; PUT RES;
+**=========================================================================================
+
+set  i /
+Agric
+Prod
+Constr
+Dist
+Infcm
+Finins
+Rlest
+Prfspp
+Ghlthed
+Othrsrv
+/;
+
+
+set h houshods /h1*h10/;
+
+alias (i, j);
+alias (h, hh);
+option decimals =4;
+
+*read the benchmark data set
+
+Table io(i, j) input output table
+        Agric   Prod    Constr  Dist    Infcm   Finins  Rlest   Prfspp  Ghlthed Othrsrv
+Agric   3127    12686   250     1622    8       0       0       15      112     20
+Prod    7256    289576  35007   66800   13040   6002    622     11790   71029   6674
+Constr  426     4722    57324   13139   1639    4300    9765    2075    6725    784
+Dist    974     17089   3467    60804   4062    13401   696     9064    14481   1855
+Infcm   227     6245    1444    18376   15795   13174   1261    9884    9890    3483
+Finins  863     14741   4369    11293   2729    20750   44549   5918    6781    1233
+Rlest   139     1558    1980    15065   1157    3938    1139    1723    5356    723
+Prfspp  790     25019   16794   43919   19727   26786   4538    76723   33101   12561
+Ghlthed 32      2502    1511    5298    1107    2560    3370    9068    48167   782
+Othrsrv 77      938     100     1725    3085    939     51      2201    4869    6628
+* data constructed from the supply and use table 2009 from the ONS 2012.
+
+
+Table va(*,i) income and consumption table of UK from the ONS 2012
+        Agric   Prod    Constr  Dist    Infcm   Finins  Rlest   Prfspp  Ghlthed Othrsrv
+Prodtx  -3280   4081    817     10034   1087    2559    -533    1157    380     1168
+Wages   3394    108572  47246   161281  47434   56890   6794    95617   220102  29542
+capital 7916    76281   39310   63465   28579   67445   84153   51781   32561   11099
+Import  9121    314104  1409    29596   12514   11823   909     33824   2188    5737
+Mrgins  5337    284810  10888   -214382 13807   -9736   20181   24724   2723    -1430
+
+Table FD(*,i) income and consumption table of UK from the ONS 2012
+        Agric   Prod    Constr  Dist    Infcm   Finins  Rlest   Prfspp  Ghlthed Othrsrv
+Conshh  15502   374956  7167    131456  38161   54928   139527  15387   65419   51602
+consgov 0       6131    0       0       3116    0       0       0       313401  4701
+GFCFR   815     47256   112246  802     24372   118     4576    6108    1431    313
+export  2242    226785  1604    29884   20342   52559   614     54111   3817    3630
+;
+* data constructed from the supply and use table 2009 from the ONS 2012.
+
+Table income(*,h) Expenditure and income of households
+        h1      h2      h3      h4      h5      h6      h7      h8      h9      h10
+Wage    21796   33614   42812   51949   61293   70509   83979   99098   118175  193647
+intr    12979   20015   25493   30933   36497   41985   50006   59008   70367   115307
+Leisure 2577     7451    14230   21877   28269   35535   41156   46294   54041   73363
+hit     0.0     0.32    0.32    0.32    0.32    0.32    0.32    0.32    0.40    0.45
+Expend  14900   13128   14835   17355   20143   22976   25367   29312   33512   46241
+Income  7791    12015   15303   18569   21909   25203   30018   35422   42241   69218
+Incshre 0.028   0.043   0.055   0.067   0.079   0.091   0.108   0.128   0.152   0.249
+Saving  -7109   -1113   468     1214    1766    2227    4651    6110    8729    22977
+;
+*Source: Office for National Statistics, 2012
+
+Table conshr(h,i) Expediture share of households
+        Agric   Prod    Constr  Dist    Infcm   Finins  Rlest   Prfspp  Ghlthed Othrsrv
+H1      0.063   0.063   0.063   0.063   0.063   0.063   0.063   0.063   0.063   0.063
+H2      0.055   0.055   0.055   0.055   0.055   0.055   0.055   0.055   0.055   0.055
+H3      0.062   0.062   0.062   0.062   0.062   0.062   0.062   0.062   0.062   0.062
+H4      0.073   0.073   0.073   0.073   0.073   0.073   0.073   0.073   0.073   0.073
+H5      0.085   0.085   0.085   0.085   0.085   0.085   0.085   0.085   0.085   0.085
+H6      0.097   0.097   0.097   0.097   0.097   0.097   0.097   0.097   0.097   0.097
+H7      0.107   0.107   0.107   0.107   0.107   0.107   0.107   0.107   0.107   0.107
+H8      0.123   0.123   0.123   0.123   0.123   0.123   0.123   0.123   0.123   0.123
+H9      0.141   0.141   0.141   0.141   0.141   0.141   0.141   0.141   0.141   0.141
+H10     0.194   0.194   0.194   0.194   0.194   0.194   0.194   0.194   0.194   0.194
+;
+*Source: Office for National Statistics, 2012
+
+*check the base case in equilibrium
+parameters
+iot     input output
+l0      labour output
+k0      capital output
+y0      sectoral output at factor cost
+yy0     sectoral output at market prices
+sd0     total sectoral demand
+ssd0    total sectoral demand
+itx     indirect taxes
+otax    other taxes and subsidies
+tax     total tax (indirect and other taxes)
+labtax  labour tax rate
+captax  capital tax rate
+suptax  tax on goods supplied
+c0      consumption demand
+cc0
+leisure
+wages
+netwage
+nettrn
+hit
+hit0
+intr(h)
+inv0    investment demand
+gov     government consumption
+exp     exports
+imp    imports
+tx      indirect taxes as a percentage of exports
+fd0     final demand
+p0
+pl0
+tm      taxes on imports
+i0
+px0     export price
+bal     balance between sectoral demand and supply
+endowl  labour endownment
+endowk  endowment of capital
+gk0     gross of tax capital income
+incbal  income balance for households
+saving  savings of households
+nincbal net of tax income
+revbal  revenue balance for the government
+govrev  government revenue
+sibal   saving investment balance
+imexbal trade balance or BOP
+zeprof  zero profit condition amongst production sectors
+tinv    total investment
+rbal   resource balance
+tbal   trade balance
+cap0
+Kstockt  total capital stock
+vat(i) value added tax rate
+TINCOME
+INCSHR
+WAGESHR
+INTSHR
+TC(I)
+CNSHR
+;
+
+
+iot(i,j) =io(i,j);
+L0(i) = va("wages",i);
+k0(i) = va("capital",i);
+itx(i) = va("prodtx",i);
+otax(i) = va("mrgins",i);
+c0(h, i) =conshr(h,i)*FD("conshh",i);
+inv0(i)=va("GFCFR",i);
+gov(i)=FD("consgov",i);
+exp(i)=FD("export",i);
+imp(i)=va("import",i);
+cap0(i) = k0(i);
+vat(i) = 0.175;
+
+*supply at factor cost/supply side
+y0(i) = sum(j,io(j,i))+L0(i)+k0(i);
+
+
+tincome(h) = income("wage",h)+income("intr",h);
+WAGESHR(H) =  income("wage",h)/SUM(HH, income("wage",Hh));
+INTSHR(H) =  income("INTR",h)/SUM(HH, income("INTR",Hh));
+INCSHR(H) = (income("wage",h)+income("intr",h))/SUM(HH, (income("wage",Hh)+income("intr",Hh)));
+
+
+c0(h, i) =INCSHR(h)*FD("conshh",i);
+
+
+parameter fimp, exsub, check1, check2, check3;
+
+*Table income(*,h) Sources of Income to the households
+*       h1
+*wage 433057
+*intr 195378
+;
+
+wages(h) = WAGESHR(H)*sum(i, L0(i));
+*wages(h) = WAGESHR(H)*776872;
+intr(h) =  INTSHR(H)*sum(i, k0(i));
+*intr(h) =  INTSHR(H)*462590;
+
+*wages(h) = income("wage",h);
+*intr(h) = income("intr",h);
+hit(h) = 0.20;
+hit("h9") = 0.40;
+hit("h10") = 0.50;
+
+netwage(h) = (1-hit(h))*wages(h);
+leisure(h) = (3/5)*netwage(h);
+*aggregate consumption -including leisure
+
+cc0(h) =sum(i,c0(h,i))+leisure(h);
+
+fimp = 94247;
+exsub =1970;
+
+fimp = 0;
+exsub =0;
+
+
+TC(I) =SUM(H, C0(H,I));
+DISPLAY WAGES, INTR, C0, CC0,TC;
+
+
+*supply at market prices/supply side
+yy0(i) = sum(j,io(j,i))+L0(i)+k0(i)+itx(i)+otax(i);
+*+imp(i);
+
+*demand side
+sd0(i) = sum(j,io(i,j))+ sum(h, c0(h,i))+gov(i)+inv0(i);
+
+*-exp(i)-exsub+imp(i)+fimp;
+
+*trade balance/BOP
+tbal = SUM(I,imp(I)-exp(I));
+
+check1 = sum(i,sd0(i)) - sum(i,yy0(i));
+display sd0, yy0, check1, tbal;
+
+
+*+imp(i)+fimp;
+ssd0(i) = sum(j,io(i,j))+sum(h, c0(h,i))+gov(i)+inv0(i)-exp(i)+imp(i);
+fd0(i) = sd0(i) - sum(j,io(i,j));
+
+
+check2 = sum(i, sd0(i))-sum(i,yy0(i)+imp(i));
+
+check3 = sum(i, yy0(i))-sum(i,ssd0(i));
+
+display check1, check2, check3;
+
+
+*labour endownment
+endowL = sum(i,L0(i));
+endowk = sum(i,k0(i));
+
+display tbal;
+
+
+*BALANCE
+bal(i) =yy0(i) -sd0(i);
+
+*tax rates
+tax(i) = itx(i)+otax(i);
+labtax(i)$L0(i) = 0.75*tax(i)/L0(i);
+
+*capital income tax rates
+captax(i)= 0.25*tax(i)/k0(i);
+gk0(i)= k0(i)*(1+captax(i));
+
+*income balance (net of tax income)
+saving(h) = ((1-hit(h))*WAGES(H)+INTR(H))-SUM(I,  (1+vat(i))*C0(H,I));
+*Saving= sum(i,L0(i)+k0(i)-c0(i));
+
+*investment saving balance
+
+sibal=SUM(H,saving(H)) - sum(i,inv0(i));
+tinv =sum(i,inv0(i));
+
+*revenue balance
+govrev= sum((h,i), vat(i)*c0(h,i)) +sum(h, hit(h)*wages(h)) +sum(i, k0(i)*captax(i)+L0(i)*labtax(i));
+
+*revbal= sum(h, hit(h)*wages(h)) + sum(i, k0(i)*captax(i)+L0(i)*labtax(i)-gov(i));
+
+revbal= govrev -  SUM(I, gov(i));
+*zero profit
+zeprof(i)= yy0(i)- sum(j,io(j,i))-L0(i)-k0(i)-tax(i);
+
+rbal = sibal+revbal;
+**44
+
+display bal, ssd0, yy0, tax, captax, labtax, saving, revbal, sibal, zeprof, rbal, tbal;
+
+
+
+
+px0(i) =1;
+tm(i) =0;
+
+*Armington elasticities
+PARAMETER ETRNDX(I),  ETRNXX(I), phi;
+;
+ETRNDX(I)=3;
+ETRNXX(I)=4;
+
+
+p0(i) = (1+captax(i));
+pl0(i) = (1+labtax(i));
+
+
+
+PARAMETER    TRANS, ELAS, CC0, incadj(h);
+
+*Trans=govrev-sum(i, gov(i));
+TRANS(H) =((1-hit(h))*WAGES(H)+INTR(H))-SUM(I,  (1+vat(i))*C0(H,I));
+
+Table inadj(h,*) income adjustment
+          incadj
+H1      12940.4399
+H2      -35577.0548
+H3      -49190.2135
+H4      -81780.5182
+H5      -89732.0098
+H6      -96020.857
+H7      -87346.2127
+H8      -140016.4873
+H9      -131290.4208
+H10     698157.9449
+;
+
+*Incadj(h) = inadj(h, "incadj");
+
+Incadj(h) = 0;
+
+CC0(H) = SUM(I,(1+vat(i))*C0(H,I)) + leisure(h);
+DISPLAY TRANS, CC0;
+
+
+
+
+display iot, l0, k0, itx, otax, c0,inv0,gov, exp, imp, pl0, trans;
+display c0,CC0;
+
+
+
+elas =1;
+
+Set tt /2009*2101/
+ t(tt)  /2009*2100/
+ t0(t)
+ tl(t)
+tp(tt)
+tterm(tt)
+;
+
+
+t0(t) =yes$(ord(t) eq 1);
+tl(t) =yes$(ord(t) eq card(t));
+tterm(tt) = yes$(ord(tt) eq card(tt));
+tp(tt) = yes$(ord(tt) eq card(tt));
+
+scalar
+   esub   elasticity of substitution    /1.5/
+   gr     growth rate of output         /0.03/
+   r      rate of interest              /0.05/
+   depr   rate of depreciation          /0.02/
+   intersub                              /0.98/
+lendow
+;
+Parameters
+      pref(tt)   reference prices
+      qref(t)   refenrece quantities
+      cref(t)   reference consumsption
+      kstock(i) initial capital stock
+      etran(i)
+invest(i)
+idiffer
+invadj
+;
+lendow = sum(i, L0(i));
+
+cap0("institt")=20;
+pref(tt) = (1/(1+r))**(ORD(tt)-1);
+qref(t) = (1+gr)**(ord(t)-1);
+cref(t) = sum((h,i), c0(h,i))*qref(t)*pref(t);
+kstock(i) = cap0(i)/(depr + r);
+etran(i)=1.5;
+
+*invest(i) = ((r+depr)/(depr+gr))*cap0(i);
+invest(i) = (gr+depr)*cap0(i)/(r+depr);
+
+
+idiffer(i) = invest(i)-inv0(i);
+invadj(i) = idiffer(i);
+
+display idiffer, invadj;
+
+
+idiffer(i) = invest(i)-inv0(i)-invadj(i);
+*idiffer(i) = invest(i)-cap0(i);
+
+*kstock(i) = invest(i)/(depr + r);
+
+inv0(i)=inv0(i)+invadj(i)
+display invest, inv0, kstock, idiffer, invadj, c0, invest, inv0;
+
+cref(t) = sum((h,i), c0(h,i))*qref(t)*pref(t);
+tinv = sum(i, inv0(i));
+
+kstockt = sum(i, kstock(i));
+
+display pref, qref, cref, kstock;
+
+display cap0, inv0;
+
+Parameter w0, income,incadj, capadj, incadj2, capdif, tcap0(i);
+tcap0(i) = sum(j, k0(j))/card(i);
+
+w0(h)  =sum(i,c0(h, i));
+CNSHR(H) = CC0(H)/SUM(HH, CC0(HH));
+
+Parameter phi, costUNMP;
+
+phi =1;
+
+costUNMP(h) = 1/card(h)*sum(i,0.05*L0(i));
+
+$ontext
+
+$echop:.true
+$datech:.true
+$funlog:.true
+
+$model:unequk
+
+$Sectors:
+Y(i,t)
+K(i,t)
+A(i,t)
+*x(i,t)$exp(i)
+id(t)
+FX(t)
+inv(i,t)
+gv(t)
+U(h,t)
+ls(h,t)
+c(h,t)
+lu(h)
+Eu(t)
+match(i,t)
+
+
+$commodities:
+pd(i,t)
+pk(i,tt)
+p(i,t)
+pinv(t)
+px(i,t)$exp(i)
+rk(i,t)
+pl(t)
+pfx(t)
+pg(t)
+pu(h,t)
+pc(h,t)
+ple(h,t)
+plu(h)
+rw(t)
+pv(i,t)
+pm(i, t)
+
+$consumers:
+ra(h)
+govt
+union
+
+$auxiliary:
+Tcap(i)
+
+*investment by origin
+$prod:id(t)  k:1.5
+o:pinv(t)               q:(sum(i,invest(i)))
+I:p(i,t)                q:(inv0(i)) k:
+
+*investment by destination
+
+$prod:inv(i,tt)$T(tt)
+o:pk(i,tt+1)            q:(inv0(i))
+I:pinv(tt)              q:invest(i)
+
+*law of motion of capital
+
+$prod:K(i,tt)$t(tt)
+O:rk(i,tt)              q:cap0(i)
+O:pk(i,tt+1)            q:(kstock(i)*(1-depr))
+I:PK(i,tt)              q:kstock(i)
+
+*production
+
+$prod:y(i,t) s:0 t:etran(i) va:1.5
+o:pd(i,t)$phi               q:((yy0(i)-0.05*L0(i))-exp(i))
+*o:pd(i,t)                  q:((yy0(i))-exp(i))
+o:px(i,t)$exp(i)            q:exp(i)
+i:P(j,t)                    q:io(j,i)
+I:pl(t)$phi                 q:(L0(i)-0.05*L0(i))   A:govt T:labtax(i)  P:((1+labtax(i)))  va:
+*I:pl(t)                 q:(L0(i))                 A:govt T:labtax(i)  P:((1+labtax(i)))  va:
+I:rk(i,t)                   q:(k0(i))              A:govt T:captax(i)  P:((1+captax(i)))  va:
+
+
+*Armington supply
+
+$prod:A(i,t)  a:1.2
+*o:p(i,t)               q:(sd0(i))
+o:p(i,t)$phi                    q:((sd0(i)-0.05*L0(i)))
+i:pd(i,t)$phi                   q:((yy0(i)-0.05*L0(i))-exp(i))
+*i:pd(i,t)              q:(yy0(i)-exp(i))    a:
+i:pfx(t)                        q:imp(i)     a:
+
+$prod:fx(t)  a:2
+o:pfx(t)                q: (sum(i,exp(i)))
+i:px(i,t)$exp(i)        q:exp(i)  a:
+
+
+$prod:u(h,t)  n:Esub
+o:pu(h,t)               q:(cc0(h))             p:pref(t)
+i:pc(h,t)               q:(sum(i,c0(h,i)*(1+vat(i))))     p:pref(t)  n:
+i:ple(h,t)              q:(leisure(h))         p:pref(t)    n:
+
+*composite consumption
+$prod:c(h,t)  a:Esub
+o:pc(h,t)               q:(sum(i,c0(h,i)*(1+vat(i))))
+*o:pc(h,t)              q:c0(h,i)
+i:p(i,t)                q:(c0(h,i))    a:govt t:vat(i) p:(1+vat(i))
+
+*labour supply
+$prod:ls(h,t)
+*o:pl(t)                q:wages(h)  a:govt  t:hit(h)
+*i:ple(h,t)             q:netwage(h)
+*o:pl(t)                q:(wages(h)-1/card(h)*sum(i,0.05*L0(i)))  a:govt  t:hit(h)
+*i:ple(h,t)             q:(netwage(h)-1/card(h)*sum(i,0.05*L0(i)))
+o:pl(t)                 q:(wages(h)-costUNMP(h))  a:govt  t:hit(h)
+i:ple(h,t)              q:(netwage(h)-costUNMP(h))
+i:rw(t)                   Q:(sum(i, 0.03*L0(i)))
+
+*matching from vacant and unemployed
+$prod:match(i,t)
+o:PM(i,t)            Q:(0.03*L0(i))  a:union t:vat(i)
+i:pv(i,t)            Q:(0.01*L0(i))
+i:rw(t)            Q:(0.03*L0(i))
+*i:pl(tt)  Q:(sum(i,0.1*L0(i)))
+
+*equilibrium unemployment
+$prod:EU(t)
+o:rw(t)                   Q:(sum(i, 0.03*L0(i)))
+i:pv(i,t)                 Q:(0.03*L0(i))
+*i:pl(t)                  Q:(sum(i,0.01*L0(i)))
+i:PM(i,t)                 Q:(0.02*L0(i))  a:union t:labtax(i)
+
+$prod:gv(t)  a:1.5
+*o:pg(t)                q:(sum(i,gov(i)))
+*i:p(i,t)               q:(gov(i))          a:
+o:pg(t)$phi             q:(sum(i,gov(i)-0.05*L0(i)))
+i:p(i,t)                q:(gov(i)-0.05*L0(i))          a:
+*o:pv(t)                Q:(sum(i, 0.01*L0(i)))
+
+
+*lifetime utility
+$prod:lu(h)  s:intersub
+o:plu(h)                q:(sum(t, cc0(h)*qref(t)*pref(t)))
+i:pu(h,t)               q:(cc0(h)*qref(t))  p:pref(t)
+
+
+$demand:ra(h)
+D:plu(h)                q:(sum(t, cc0(h)*qref(t)*pref(t)))
+*E:ple(h,t)              q:((netwage(h)+leisure(h))*qref(t))
+E:ple(h,t)              q:((netwage(h)+leisure(h)-costUNMP(h))*qref(t))
+*E:ple(h,t)             q:(netwage(h)-1/card(h)*sum(i,0.05*L0(i)))
+E:pk(i,t0)              q:(CNSHR(h)*(kstock(i)))
+E:pk(i,tp)              q:(-CNSHR(h))   r:tcap(i)
+E:p(i,t)                q:((CNSHR(h))*invadj(i)*qref(t))
+E:pfx(t)                q:(CNSHR(h)*tbal*qref(t))
+*E:pg(T)                q:((CNSHR(h))*revbal*qref(T))
+E:pg(T)                 q:((CNSHR(h))*(revbal-6.999)*qref(T))
+
+$demand:union
+E:rw(t)                   Q:(sum(i, 0.03*L0(i))*qref(T))
+D:PM(i,t)                 Q:(0.02*L0(i)*qref(T))
+E:Pv(i,t)                 Q:(0.01*L0(i)*qref(T))
+
+
+$demand:govt
+D:pg(t)                 q:((sum(i,gov(i)*Qref(t))))
+*D:pg(t)                q:((sum(i,gov(i))))
+E: plu(h)               q:(-Incadj(h))
+
+
+
+$constraint:tcap(i)
+
+Sum(T$tl(t+1), inv(i,t+1)/inv(i,t) -k(i,t+1)/k(i,t)) =e=0;
+
+$report:
+V:Y1(i,t)       o:pd(i,t)       prod:y(i,t)
+V:X1(i,t)       o:px(i,t)       prod:y(i,t)
+V:K1(i,t)       i:rk(i,t)       prod:y(i,t)
+V:A1(i,t)       o:p(i,t)        prod:A(i,t)
+V:M1(i,t)       i:pfx(t)        prod:A(i,t)
+V:INV1(i,t)     I:pinv(t)       prod:inv(i,t)
+V:L1(i,t)       i:pl(t)          Prod:y(i,t)
+V:ls1(h,t)      i:ple(h,t)      Prod:ls(h,t)
+V:FX1(t)        o:pfx(t)        Prod:fx(t)
+V:U1(h,t)       o:pu(h,t)        Prod:U(h,t)
+V:C1(h,t)       i:pc(h,t)       Prod:U(h,t)
+V:GV1(t)        o:pg(t)         Prod:GV(t)
+V:EU1(t)        o:rw(t)        Prod:EU(t)
+V:match1(i, t)  o:pm(i,t)    Prod:match(i, t)
+V:w1(h)         W:ra(h)
+V:w2            W:govt
+
+
+$offtext
+$sysinclude mpsgeset unequk
+
+unequk.scaleopt=1;
+
+C.l(h,t)  =  qref(t);
+LS.l(h,t) =  qref(t);
+U.l(h,t)  =  qref(t);
+lu.l(h) =     1;
+pu.l(h,t) = pref(t);
+plu.l(h) =  1 ;
+ple.l(h,t) = pref(t);
+pc.l(h,t)  = pref(t);
+Y.l(i,t)=qref(t);
+K.l(i,t)=qref(t);
+A.l(i,t)=qref(t);
+*x(i,t)$exp(i)
+FX.l(t)=qref(t);
+inv.l(i,t)=qref(t);
+*U.l(t)=qref(t);
+gv.l(t)=qref(t);
+id.l(t) = qref(t);
+pd.l(i,t)=pref(t);
+pk.l(i,tt)=(1+r)*pref(tt);
+p.l(i,t)=pref(t);
+pinv.l(t)=pref(t);
+px.l(i,t)$exp(i)=pref(t);
+rk.l(i,t)=pref(t);
+pl.l(t)=pref(t);
+pu.l(H,T)=PREF(T);
+tcap.l(i) = kstock(i)*(1+gr)**card(t);
+pfx.l(t)=pref(t);
+pg.l(t)=pref(t);
+eu.l(t) =qref(t);
+rw.l(t) =pref(t);
+match.l(i,t) =qref(t);
+pv.l(i,t) =pref(t);
+pm.l(i,t) =pref(t);
+
+
+ra.l(h) = 1;
+*ra.l(h) = (sum(t, cc0(h)*qref(t)*pref(t)));
+*ra.l(h) = w0(h)+leisure(h);
+
+govt.l =1;
+
+option mcp =path;
+unequk.iterlim =0;
+unequk.workspace =60;
+Option sysout= on;
+unequk.scaleopt =0;
+
+$include unequk.gen
+solve unequk using mcp;
+
+
+parameter yb, sb, kb, lb, pb, rb, ib, ub, fxb, gry, rep, reph, reph1, incb, inch, gov, report,rep1, report1;
+
+Parameters
+lsupply          labour supply by households
+lsupplyt         total labor supply
+
+emplyment       employment by sectors
+emplymntt      total employment
+
+wags            wage rate by households
+*wagest            wages
+
+wagebill         total wage bill
+
+exports          level of exports by sectors
+imports          level of imports by sectors
+tradedef         trade deficit by sectors
+capiflow         capital inflow each year
+perswelf         welfare level of households
+
+perscons         personal consumption
+perconst         total personal consumption
+
+saving           amount of saving
+invst           investment by sectors
+investt          total investment
+kstck           capital stock by sectors
+
+kstocktt          total capital stock
+rentlrate        rental rate by sectors
+stockvalue       value of stocks
+implintr         implied interest rates
+dfis             direct foreign investment by sectors
+dfit             total direct foreign investment
+
+ybt      total output
+gry      growth rate of output by sector
+gryt     growth rate of output in total
+grk      growth rate of capital by sector
+gri      growth rate of investment in total
+grkt
+grit
+EUL     equilibrium unemployment level
+EUR     equilibrium unemployment rate
+Pi      sectoral prices
+Pindx   price index
+gvs      government services
+nfx      net foreign asset
+R_inc    revenue from income tax
+R_VT     revenue from  vat
+R_KI     revenue from corporation tax
+R_lb     revenue from employment tax
+gvrtio   government spending gdp ratio
+RYrtio   revenue gdp ratio
+match_l   equilibrium job matching
+match_r   job matching ratio
+hhinc0       household income
+govtrn0      transfer
+
+;
+
+unequk.iterlim  = 100000000;
+*$include unequk.gen
+*solve unequk using mcp;
+
+lsupply(h,t)    = ls1.l(h,t);
+lsupplyt(t)      = sum(h, lsupply(h,t));
+
+emplyment(i,t) = L1.l(i,t);
+emplymntt(t)   = sum(i, emplyment(i,t));
+
+wags(h,t)      = ple.l(h,t);
+wagebill(t)      = sum(i,pl.l(t)*L1.l(i,t));
+
+exports(i,t)    = x1.l(i,t)$exp(i);
+imports(i,t)    = m1.l(i,t);
+tradedef(t)      = sum(i, x1.l(i,t)$exp(i)-m1.l(i,t));
+capiflow(t)      = (pfx.l(t)*FX1.l(t)-sum(i, pfx.l(t)*m1.l(i,t)));
+perswelf(h,t)   = u1.l(h,t);
+
+perscons(h,t)   = c1.L(h,t);
+perconst(t)     = sum(h,c1.l(h,t));
+
+invst(i,t)     = INV1.l(i,t);
+investt(t)     = sum(i, invst(i,t));
+
+kstck(i,t)     = K1.l(i,t)/(depr+r);
+kstocktt(t)     = sum(i,kstck(i,t));
+
+rentlrate(i,t)  = rk.l(i,t);
+stockvalue(i,t) = pk.l(i,t)*K1.l(i,t);
+implintr(i,t)   = rk.l(i,t) -( r + depr);
+
+dfis(i,t)       = px.l(i,t)*x1.l(i,t)$exp(i)-pfx.l(t)*m1.l(i,t);
+dfit(t)          = sum(i, dfis(i,t));
+
+gry(i,t)$y.l(i,t-1) = ((y1.l(i,t)-y1.l(i,t-1))/y1.l(i,t-1))*100;
+grk(i,t)$k1.l(i,t-1) = ((k1.l(i,t)-k1.l(i,t-1))/k1.l(i,t-1))*100;
+gri(i,t)$inv1.l(i,t-1) = ((inv1.l(i,t)-inv1.l(i,t-1))/inv1.l(i,t-1))*100;
+
+yb(i,t)         =  y1.l(i,t);
+ybt(t)           =  sum(i, yb(i,t));
+
+grkt(t)$kstocktt(t-1) = 100*(kstocktt(t)-kstocktt(t-1))/kstocktt(t-1);
+grit(t)$investt(t-1) = 100*(investt(t)-investt(t-1))/investt(t-1);
+
+gryt(t)$ybt(t-1) =  100*(ybt(t)-ybt(t-1))/ybt(t-1);
+EUL(t) = EU1.L(t);
+match_l(i,t) = match1.l(i,t);
+EUR(t)  = (EU1.L(t))/(EU1.L(t)+sum(h, ls1.l(h,t)));
+pi(i,t) = p.l(i,t);
+Pindx(t) = sum(i, p.l(i,t)*(p.l(i,t)/sum(j, p.l(j,t))));
+gvs(t) = gv1.l(t);
+nfx(t) = fx1.l(t);
+*R_inc(t) = sum(h, hit(h)*ple.l(h,t)*ls1.l(h,t));
+R_inc(t) = sum(h, hit(h)*pl.l(t)*ls1.l(h,t));
+R_VT(t) = sum(i, vat(i)*P.l(i,t)*(A1.l(i,t)-inv1.l(i,t)-x1.l(i,t)));
+R_KI(t) = sum(i,rk.l(i,t)*captax(i)*K1.l(i,t));
+R_lb(t) = sum(i,pl.l(t)*labtax(i)*L1.l(i,t));
+gvrtio(t) =gvs(t)/(sum(h, perscons(h,t))+sum(i, INVST(i,T))+SUM(I,X1.L(I,T)$exp(I))-SUM(I,M1.L(I,T)));
+*RYrtio(t) =(R_inc(t)+R_VT(t)+R_KI(t)+R_lb(t))/(sum(h, perscons(h,t))+sum(i, INVST(i,T))+SUM(I,X1.L(I,T)$exp(I))-SUM(I,M1.L(I,T)));
+RYrtio(t) =(R_inc(t)+R_VT(t)+R_KI(t)+R_lb(t))/sum(i, P.l(i,t)*y1.l(i,t));
+*match_r(i,t) =match1.l(i,t)/Eu1.l(t);
+hhinc0(h) =ra.l(h);
+govtrn0   =govt.l;
+
+display lsupply, lsupplyt, emplyment, emplymntt, wags, wagebill, exports, imports, tradedef;
+display capiflow, perswelf, perscons, perconst, invst, investt, kstck, kstocktt, rentlrate;
+display stockvalue, implintr, dfis, dfit, gry, gryt;
+
+
+
+yb(i,t)         = y1.l(i,t);
+kb(i,t)         = k1.l(i,t);
+lb(i,t)         = l1.l(i,t);
+ib(i,t)         = inv1.l(i,t);
+
+pb(i,t)         = pd.l(i,t);
+rb(i,t)         = rk.l(i,t);
+
+ub(h,t)         = U1.l(h, t);
+reph("Utility",h,t) = U1.l(h, t);
+incb(h, "income") =w1.l(h);
+
+$include "E:\M07\write_match_resuk1.inc"
+
+
+
+*$exit
+
+
+
+labtax(i)      = 0.2;
+captax(i)      = 0.22;
+
+hit(h) =0.32;
+hit("h1") =0;
+hit("h9") =0.40;
+hit("h10") =0.45;
+Vat(i) =0.2;
+option decimals  = 8;
+esub =0.9;
+
+Parameters
+lsupply_          labour supply by households
+lsupplyt_         total labor supply
+
+emplyment_       employment by sectors
+emplymntt_      total employment
+
+wags_            wage rate by households
+wagebill_         total wage bill
+
+exports_          level of exports by sectors
+imports_          level of imports by sectors
+tradedef_         trade deficit by sectors
+capiflow_         capital inflow each year
+perswlf_         welfare level of households
+
+perscons_         personal consumption
+perconst_         total personal consumption
+
+saving_           amount of saving
+invst_           investment by sectors
+investt_          total investment
+kstck_           capital stock by sectors
+
+kstocktt_          total capital stock
+rentlrate_        rental rate by sectors
+stockvlue_       value of stocks
+implintr_         implied interest rates
+dfis_             direct foreign investment by sectors
+dfit_             total direct foreign investment
+
+ybt_             total output
+gry_      growth rate of output by sector
+gryt_     growth rate of output in total
+grk_      growth rate of capital by sector
+gri_     growth rate of investment in total
+grkt_      growth rate of capital by sector
+grit_     growth rate of investment in total
+yb_
+kb_
+ub_
+EUL_     equilibrium unemployment level
+match_l_   equilibrium job matching
+EUR_     equilibrium unemployment rate
+Pi_
+Pindx_
+gvs_      government services
+nfx_      net foreign asset
+R_inc_    revenue from income tax
+R_VT_     revenue from  vat
+R_KI_     revenue from corporation tax
+R_lb_     revenue from employment tax
+gvrtio_   government spending gdp ratio
+RYrtio_   revenue gdp ratio
+match_r_
+hhinc1       household income
+govtrn1      transfer
+;
+
+Parameters lsupply_r, lsupplyt_r, emplyment_r, emplymntt_r, wags_r, wagebill_r, exports_r, imports_r, tradedef_r, capiflow_r, perswlf_r, perscons_r, perconst_r, invst_r, investt_r, kstck_r,
+kstocktt_r,rentlrate_r, stockvlue_r, implintr_r, dfis_r, dfit_r, gry_r, gryt_r,
+lsupply_d, lsupplyt_d, emplyment_d, emplymntt_d, wags_d, wagebill_d, exports_d, imports_d, tradedef_d, capiflow_d, perswlf_d, perscons_d, perconst_d, invst_d, investt_d, kstck_d, kstocktt_d,
+ rentlrate_d, stockvlue_d, implintr_d, dfis_d, dfit_d, gry_d, gryt_d;
+
+
+$include unequk.gen
+solve unequk using mcp;
+
+lsupply_(h,t)    = ls1.l(h,t);
+lsupplyt_(t)      = sum(h, lsupply_(h,t));
+
+emplyment_(i,t) = L1.l(i,t);
+emplymntt_(t)   = sum(i, emplyment_(i,t));
+
+wags_(h,t)      = ple.l(h,t);
+wagebill_(t)      = sum(i,pl.l(t)*L1.l(i,t));
+
+exports_(i,t)    = x1.l(i,t)$exp(i);
+imports_(i,t)    = m1.l(i,t);
+tradedef_(t)      = sum(i, x1.l(i,t)$exp(i)-m1.l(i,t));
+capiflow_(t)      = (pfx.l(t)*FX1.l(t)-sum(i, pfx.l(t)*m1.l(i,t)));
+perswlf_(h,t)   = u1.l(h,t);
+
+perscons_(h,t)   = c1.l(h,t);
+perconst_(t)      = sum(h,c1.l(h,t));
+
+invst_(i,t)     = INV1.l(i,t);
+investt_(t)       = sum(i, invst(i,t));
+
+kstck_(i,t)     = K1.l(i,t)/(depr+r);
+kstocktt_(t)       = sum(i,kstck(i,t));
+
+rentlrate_(i,t)  = rk.l(i,t);
+stockvlue_(i,t) = pk.l(i,t)*K1.l(i,t);
+implintr_(i,t)   = rk.l(i,t) -( r + depr);
+
+dfis_(i,t)       = px.l(i,t)*x1.l(i,t)$exp(i)-pfx.l(t)*m1.l(i,t);
+dfit_(t)          = sum(i, dfis(i,t));
+
+gry_(i,t)$y.l(i,t-1) = ((y1.l(i,t)-y1.l(i,t-1))/y1.l(i,t-1))*100;
+grk_(i,t)$k1.l(i,t-1) = ((k1.l(i,t)-k1.l(i,t-1))/k1.l(i,t-1))*100;
+gri_(i,t)$inv1.l(i,t-1) = ((inv1.l(i,t)-inv1.l(i,t-1))/inv1.l(i,t-1))*100;
+
+yb_(i,t)         =  y1.l(i,t);
+kb_(i,t)         =  k1.l(i,t);
+Ub_(h,t)         =  u1.l(h,t);
+
+ybt_(t)           =  sum(i, yb(i,t));
+gryt_(t)$ybt(t-1) =  100*(ybt(t)-ybt(t-1))/ybt(t-1);
+grkt_(t)$kstocktt(t-1) = 100*(kstocktt_(t)-kstocktt_(t-1))/kstocktt_(t-1);
+grit_(t)$investt(t-1) = 100*(investt_(t)-investt_(t-1))/investt_(t-1);
+EUL_(t) = EU1.L(t);
+match_l_(i,t) = match1.l(i,t);
+EUR_(t)  = (EU1.L(t))/(EU1.L(t)+sum(h, ls1.l(h,t)));
+pi_(i,t) = p.l(i,t);
+Pindx_(t) = sum(i, p.l(i,t)*(p.l(i,t)/sum(j, p.l(j,t))));
+gvs_(t) = gv1.l(t);
+nfx_(t) = fx1.l(t);
+*R_inc_(t) = sum(h, hit(h)*ple.l(h,t)*ls1.l(h,t));
+R_inc_(t) = sum(h, hit(h)*pl.l(t)*ls1.l(h,t));
+R_VT_(t) = sum(i, vat(i)*P.l(i,t)*(A1.l(i,t)-inv1.l(i,t)-x1.l(i,t)));
+R_KI_(t) = sum(i,rk.l(i,t)*captax(i)*K1.l(i,t));
+R_lb_(t) = sum(i,pl.l(t)*labtax(i)*L1.l(i,t));
+gvrtio_(t) =gvs(t)/(sum(h, perscons(h,t))+sum(i, INVST(i,T))+SUM(I,X1.L(I,T)$exp(I))-SUM(I,M1.L(I,T)));
+*RYrtio_(t) =(R_inc(t)+R_VT(t)+R_KI(t)+R_lb(t))/(sum(h, perscons(h,t))+sum(i, INVST(i,T))+SUM(I,X1.L(I,T)$exp(I))-SUM(I,M1.L(I,T)));
+RYrtio_(t) =(R_inc(t)+R_VT(t)+R_KI(t)+R_lb(t))/sum(i, P.l(i,t)*y1.l(i,t));
+*match_r_(i, t) =match1.l(i,t)/Eu1.l(t);
+hhinc1(h) =ra.l(h);
+govtrn1   =govt.l;
+
+display lsupply_, lsupplyt_, emplyment_, emplymntt_, wags_, wagebill_, exports_, imports_, tradedef_;
+display capiflow_, perswlf_, perscons_, perconst_, invst_, investt_, kstck_, kstocktt_, rentlrate_;
+display stockvlue_, implintr_, dfis_, dfit_, gry_, gryt_;
+
+
+
+$include "E:\M07\write_match_resuk2.inc"
+
+
+
+lsupply_r(h,t)=(lsupply_(h,t)/lsupply(h,t));
+lsupplyt_r(t)= ( lsupplyt_(t)/ lsupplyt(t));
+emplyment_r(h,t)= (emplyment_(h, t) / emplyment(h,t));
+emplymntt_r(t)= (emplymntt_(t)/ emplymntt(t));
+wags_r(h,t) = (wags_(h,t) /wags(h,t) );
+wagebill_r(t) = (wagebill_(t) / wagebill(t));
+
+exports_r(i,t) = ( exports_(i,t)/ exports(i,t));
+imports_r(i,t) = ( imports_(i,t)/ imports_(i,t));
+tradedef_r(t) = (tradedef_(t) /tradedef(t) );
+capiflow_r(t) = ( capiflow_(t)/ capiflow(t));
+
+perswlf_r(h,t) = (perswlf_(h,t) /perswelf(h,t) );
+perscons_r(h,t) = (perscons_(h,t) /perscons(h,t) );
+perconst_r(t) = (perconst_(t)  /perconst(t)  );
+invst_r(i,t) = ( invst_(i,t)/ invst(i,t));
+investt_r(t) = (investt_(t) /investt(t));
+kstck_r(i,t) = ( kstck_(i,t)/kstck(i,t) );
+kstocktt_r(t) = (kstocktt_(t) /kstocktt(t) );
+
+rentlrate_r(i,t) =(rentlrate_(i,t)/ rentlrate(i,t));
+stockvlue_r(i,t) = ( stockvlue_(i,t)/ stockvalue(i,t));
+implintr_r(i,t) = (implintr_(i,t) / implintr(i,t));
+dfis_r(i,t) = ( dfis_(i,t)/ dfis(i,t));
+dfit_r(t) = (dfit_(t) / dfit(t));
+gry_r(i,t) = (gry_(i,t) /gry(i,t) );
+gryt_r(t) = ( gryt_(t)/gryt(t) );
+
+lsupply_d(h,t) = lsupply_r(h,t)-lsupply_r(h, t-1);
+lsupplyt_d(t) = lsupplyt_r(t)-lsupplyt_r(t-1);
+emplyment_d(h,t) = emplyment_r(h,t)-emplyment_r(h,t-1);
+emplymntt_d(t) = emplymntt_r(t) -emplymntt_r(t-1);
+wags_d(h,t) =wags_r(h,t)-wags_r(h,t-1);
+wagebill_d(t) = wagebill_r(t)-wagebill_r(t-1);
+exports_d(i,t) = exports_r(i,t) -exports_r(i,t-1) ;
+imports_d(i,t) = imports_r(i,t) -imports_r(i,t-1);
+tradedef_d(t) =tradedef_r(t) -tradedef_r(t-1);
+capiflow_d(t) = capiflow_r(t)-capiflow_r(t-1);
+perswlf_d(h,t) = perswlf_r(h,t) -perswlf_r(h,t-1);
+perscons_d(h,t) = perscons_r(h,t)-perscons_r(h,t-1);
+perconst_d(t) = perconst_r(t)-perconst_r(t-1);
+invst_d(i,t) = invst_r(i,t)-invst_r(i,t-1);
+investt_d(t) = investt_r(t)-investt_r(t-1);
+
+kstck_d(i,t) = kstck_r(i,t)-kstck_r(i,t-1);
+
+kstocktt_d(t) = kstocktt_r(t)-kstocktt_r(t);
+rentlrate_d(i,t) = rentlrate_r(i,t) -rentlrate_r(i,t-1) ;
+stockvlue_d(i,t) = stockvlue_r(i,t) -stockvlue_r(i,t-1) ;
+implintr_d(i,t) = implintr_r(i,t) -implintr_r(i,t-1) ;
+dfis_d(i,t) = dfis_r(i,t)-dfis_r(i,t-1);
+dfit_d(t) = dfit_r(t)-dfit_r(t);
+gry_d(i,t) = gry_r(i,t)-gry_r(i,t-1);
+gryt_d(t) = gryt_r(t)-gryt_r(t);
+
+Parameters  lsupply_, lsupplyt_, emplyment_, emplymntt_, wags_, wagebill_, exports_, imports_, tradedef_, capiflow_, perswlf_, perscons_, perconst_, invst_, investt_, kstck_, kstocktt_, rentlrate_
+         stockvlue_, implintr_, dfis_, dfit_, gry_, gryt_
+lsupply_, lsupplyt_, emplyment_, emplymntt_, wags_, wagebill_, exports_, imports_, tradedef_, capiflow_, perswlf_, perscons_, perconst_, invst_, investt_, kstck_, kstocktt_, rentlrate_
+         stockvlue_, implintr_, dfis_, dfit_, gry_, gryt_;
+
+ execute_unload 'matchdata.gdx',
+  lsupply, lsupplyt, emplyment, emplymntt, wags, wagebill, exports, imports, tradedef,capiflow, perswelf, perscons, perconst
+  invst, investt, kstck, kstocktt, rentlrate,  stockvalue, implintr, dfis, dfit, gry, gryt
+ lsupply_, lsupplyt_, emplyment_, emplymntt_, wags_, wagebill_, exports_, imports_, tradedef_, capiflow_, perswlf_, perscons_, perconst_, invst_, investt_, kstck_
+kstocktt_, rentlrate_, stockvlue_, implintr_, dfis_, dfit_, gry_, gryt_
+lsupply_r, lsupplyt_r, emplyment_r, emplymntt_r, wags_r, wagebill_r, exports_r, imports_r, tradedef_r, capiflow_r, perswlf_r, perscons_r, perconst_r, invst_r, investt_r, kstck_r, kstocktt_r, rentlrate_
+         stockvlue_r, implintr_r, dfis_r, dfit_r, gry_r, gryt_r
+lsupply_d, lsupplyt_d, emplyment_d, emplymntt_d, wags_d, wagebill_d, exports_d, imports_d, tradedef_d, capiflow_d, perswlf_d, perscons_d, perconst_d, invst_d, investt_d, kstck_d, kstocktt_d, rentlrate_
+         stockvlue_d, implintr_d, dfis_d, dfit_d, gry_d, gryt_d;
+
+* generate a chart file
+* open the file in the GAMSIDE to view the chart
+file f /matchchart.gch/; put f;
+$onput
+[CHART]
+GDXFILE=matchdata.gdx
+TITLE=Search and Matching
+[SERIES1]
+SYMBOL=Search and Matching
+TYPE=multi-linex
+$offput
