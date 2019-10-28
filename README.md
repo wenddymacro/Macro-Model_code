@@ -19,3 +19,5 @@ Lists of Papers:
 8. Bianchi, F., & Nicolò, G. (2017). A generalized approach to indeterminacy in linear rational expectations models (No. w23521). National Bureau of Economic Research.
 
 9. Benhabib, J., & Spiegel, M. M. (2009). Moderate inflation and the deflation–depression link. Journal of Money, Credit and Banking, 41(4), 787-798.
+
+10.Carlstrom, C. T., & Fuerst, T. S. (1997). Agency costs, net worth, and business fluctuations: A computable general equilibrium analysis. The American Economic Review, 893-910.
