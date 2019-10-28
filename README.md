@@ -17,3 +17,5 @@ Lists of Papers:
 7. Bhattarai, K., & Dixon, H. (2014). Equilibrium unemployment in a general equilibrium model with taxes. The Manchester School, 82, 90-128.
 
 8. Bianchi, F., & Nicolò, G. (2017). A generalized approach to indeterminacy in linear rational expectations models (No. w23521). National Bureau of Economic Research.
+
+9. Benhabib, J., & Spiegel, M. M. (2009). Moderate inflation and the deflation–depression link. Journal of Money, Credit and Banking, 41(4), 787-798.
