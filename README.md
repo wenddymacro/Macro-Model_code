@@ -15,3 +15,5 @@ Lists of Papers:
 6. Bilbiie, F. O., Ghironi, F., & Melitz, M. J. (2012). Endogenous entry, product variety, and business cycles. Journal of Political Economy, 120(2), 304-345.
 
 7. Bhattarai, K., & Dixon, H. (2014). Equilibrium unemployment in a general equilibrium model with taxes. The Manchester School, 82, 90-128.
+
+8. Bianchi, F., & Nicolò, G. (2017). A generalized approach to indeterminacy in linear rational expectations models (No. w23521). National Bureau of Economic Research.
