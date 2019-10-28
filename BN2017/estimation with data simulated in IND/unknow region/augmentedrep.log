@@ -1,0 +1,241 @@
+Starting Dynare (version 4.5.5).
+Starting preprocessing of the model file ...
+Found 10 equation(s).
+Evaluating expressions...done
+Computing static model derivatives:
+ - order 1
+Computing dynamic model derivatives:
+ - order 1
+ - order 2
+Processing outputs ...
+done
+Preprocessing completed.
+mpler</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\posterior_sampler.m',60,0)">line 60</a>)
+    posterior_sampler_initialization(TargetFun, xparam1, vv,
+    mh_bounds,dataset_,dataset_info,options_,M_,estim_params_,bayestopt_,oo_);
+
+出错 <a href="matlab:matlab.internal.language.introspective.errorDocCallback('dynare_estimation_1', 'C:\计量\4.5.5\matlab\dynare_estimation_1.m', 448)" style="font-weight:bold">dynare_estimation_1</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\dynare_estimation_1.m',448,0)">line 448</a>)
+            posterior_sampler(objective_function,posterior_sampler_options.proposal_distribution,xparam1,posterior_sampler_options,bounds,dataset_,dataset_info,options_,M_,estim_params_,bayestopt_,oo_);
+            
+出错 <a href="matlab:matlab.internal.language.introspective.errorDocCallback('dynare_estimation', 'C:\计量\4.5.5\matlab\dynare_estimation.m', 105)" style="font-weight:bold">dynare_estimation</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\dynare_estimation.m',105,0)">line 105</a>)
+    dynare_estimation_1(var_list,dname);
+
+出错 <a href="matlab:matlab.internal.language.introspective.errorDocCallback('augmentedrep', 'C:\计量\4.5.5\examples\BianchiNicolo2017\estimation with data simulated in IND\unknown region\augmentedrep.m', 200)" style="font-weight:bold">augmentedrep</a> (<a href="matlab: opentoline('C:\计量\4.5.5\examples\BianchiNicolo2017\estimation with data simulated in IND\unknown region\augmentedrep.m',200,0)">line 200</a>)
+oo_recursive_=dynare_estimation(var_list_);
+
+出错 <a href="matlab:matlab.internal.language.introspective.errorDocCallback('dynare', 'C:\计量\4.5.5\matlab\dynare.m', 235)" style="font-weight:bold">dynare</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\dynare.m',235,0)">line 235</a>)
+evalin('base',fname) ;
+} 
+dynare augmentedrep
+
+Configuring Dynare ...
+[mex] Generalized QZ.
+[mex] Sylvester equation solution.
+[mex] Kronecker products.
+[mex] Sparse kronecker products.
+[mex] Local state space iteration (second order).
+[mex] Bytecode evaluation.
+[mex] k-order perturbation solver.
+[mex] k-order solution simulation.
+[mex] Quasi Monte-Carlo sequence (Sobol).
+[mex] Markov Switching SBVAR.
+
+Using 64-bit preprocessor
+Starting Dynare (version 4.5.5).
+Starting preprocessing of the model file ...
+Found 10 equation(s).
+Evaluating expressions...done
+Computing static model derivatives:
+ - order 1
+Computing dynamic model derivatives:
+ - order 1
+ - order 2
+Processing outputs ...
+done
+Preprocessing completed.
+
+
+You did not declare endogenous variables after the estimation/calib_smoother command.
+[警告: Your prior allows for correlations between structural shocks larger than +-1 and will not
+integrate to 1 due to truncation. Please change your prior] 
+[> In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('initial_estimation_checks', 'C:\计量\4.5.5\matlab\initial_estimation_checks.m', 96)" style="font-weight:bold">initial_estimation_checks</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\initial_estimation_checks.m',96,0)">line 96</a>)
+  In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('dynare_estimation_1', 'C:\计量\4.5.5\matlab\dynare_estimation_1.m', 165)" style="font-weight:bold">dynare_estimation_1</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\dynare_estimation_1.m',165,0)">line 165</a>)
+  In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('dynare_estimation', 'C:\计量\4.5.5\matlab\dynare_estimation.m', 105)" style="font-weight:bold">dynare_estimation</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\dynare_estimation.m',105,0)">line 105</a>)
+  In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('augmentedrep', 'C:\计量\4.5.5\examples\BianchiNicolo2017\estimation with data simulated in IND\unknown region\augmentedrep.m', 200)" style="font-weight:bold">augmentedrep</a> (<a href="matlab: opentoline('C:\计量\4.5.5\examples\BianchiNicolo2017\estimation with data simulated in IND\unknown region\augmentedrep.m',200,0)">line 200</a>)
+  In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('dynare', 'C:\计量\4.5.5\matlab\dynare.m', 235)" style="font-weight:bold">dynare</a> (<a href="matlab: opentoline('C:\计量\4.5.5\matlab\dynare.m',235,0)">line 235</a>)] 
+Initial value of the log posterior (or likelihood): -3408.4778
+
+==========================================================
+   Change in the posterior covariance matrix = 2.0367.
+   Change in the posterior mean = 0.7971.
+   Mode improvement = 525.356
+   New value of jscale = 0.029149
+==========================================================
+
+==========================================================
+   Change in the posterior covariance matrix = 0.85906.
+   Change in the posterior mean = 0.80292.
+   Mode improvement = 0.71989
+   New value of jscale = 0.28538
+==========================================================
+
+==========================================================
+   Change in the posterior covariance matrix = 0.15044.
+   Change in the posterior mean = 0.19387.
+   Mode improvement = 1.6395
+   New value of jscale = 0.37463
+==========================================================
+
+Optimal value of the scale parameter = 0.37463
+
+
+Final value of minus the log posterior (or likelihood):2880.762422 
+
+MODE CHECK
+
+Fval obtained by the minimization routine (minus the posterior/likelihood)): 2880.762422
+
+RESULTS FROM POSTERIOR ESTIMATION
+parameters
+            prior mean     mode    s.d. prior pstdev
+
+alpha           1.000   1.2204  0.2917 unif  0.5774 
+psi1            1.100   0.7213  0.0338 gamm  0.5000 
+psi2            0.250   0.1366  0.1249 gamm  0.1500 
+rho_R           0.500   0.6118  0.0159 beta  0.2000 
+piestar         4.000   3.2157  0.9766 gamm  2.0000 
+rstar           2.000   1.3921  0.2647 gamm  1.0000 
+kappa           0.500   0.8599  0.1512 gamm  0.3500 
+Tau             2.000   1.5509  0.2088 gamm  0.5000 
+rho_g           0.700   0.6752  0.0949 beta  0.1000 
+rho_z           0.700   0.8274  0.0267 beta  0.1000 
+
+standard deviation of shocks
+            prior mean     mode    s.d. prior pstdev
+
+e_R             0.310   0.2304  0.0088 invg  0.1600 
+e_g             0.380   0.2454  0.0631 invg  0.2000 
+e_z             1.000   1.0664  0.1040 invg  0.5200 
+e_v             2.000   2.0335  0.0696 invg  0.5000 
+
+correlation of shocks
+            prior mean     mode    s.d. prior pstdev
+
+e_z,e_g         0.000   0.1988  0.1561 norm  0.4000 
+e_R,e_g         0.000   0.0123  0.1799 norm  0.4000 
+e_z,e_R         0.000  -0.0438  0.0737 norm  0.4000 
+e_R,e_v         0.000  -0.0477  0.0791 norm  0.1000 
+e_g,e_v         0.000   0.0483  0.0976 norm  0.1000 
+e_z,e_v        -0.700  -0.8389  0.0392 norm  0.1000 
+
+
+Log data density [Laplace approximation] is -2917.675106.
+
+Estimation::mcmc: Multiple chains mode.
+Estimation::mcmc: Searching for initial values...
+Estimation::mcmc: Initial values found!
+
+Estimation::mcmc: Write details about the MCMC... Ok!
+Estimation::mcmc: Details about the MCMC are available in augmentedrep/metropolis\augmentedrep_mh_history_0.mat
+
+
+Estimation::mcmc: Number of mh files: 1 per block.
+Estimation::mcmc: Total number of generated files: 2.
+Estimation::mcmc: Total number of iterations: 250000.
+Estimation::mcmc: Current acceptance ratio per chain: 
+                                                       Chain  1: 32.6316%
+                                                       Chain  2: 32.6684%
+Estimation::mcmc: Total number of MH draws per chain: 250000.
+Estimation::mcmc: Total number of generated MH files: 1.
+Estimation::mcmc: I'll use mh-files 1 to 1.
+Estimation::mcmc: In MH-file number 1 I'll start at line 125001.
+Estimation::mcmc: Finally I keep 125000 draws per chain.
+
+
+
+MCMC Inefficiency factors per block
+Parameter        Block 1     Block 2
+SE_e_R           118.012     130.571
+SE_e_g           156.113     154.221
+SE_e_z           216.302     278.064
+SE_e_v            90.035      88.665
+CC_e_z_e_g       140.874     142.070
+CC_e_R_e_g       124.510     131.112
+CC_e_z_e_R       121.036     120.573
+CC_e_R_e_v        96.875     104.163
+CC_e_g_e_v       101.113      92.173
+CC_e_z_e_v       187.183     212.379
+alpha             91.854      98.297
+psi1             142.044     145.720
+psi2             157.159     146.612
+rho_R            125.337     117.609
+piestar           89.836     110.515
+rstar             90.713      99.484
+kappa            195.833     224.589
+Tau              125.072     128.611
+rho_g             96.656      98.474
+rho_z            129.493     130.265
+
+Estimation::mcmc::diagnostics: Univariate convergence diagnostic, Brooks and Gelman (1998):
+    Parameter 1...  Done! 
+    Parameter 2...  Done! 
+    Parameter 3...  Done! 
+    Parameter 4...  Done! 
+    Parameter 5...  Done! 
+    Parameter 6...  Done! 
+    Parameter 7...  Done! 
+    Parameter 8...  Done! 
+    Parameter 9...  Done! 
+    Parameter 10...  Done! 
+    Parameter 11...  Done! 
+    Parameter 12...  Done! 
+    Parameter 13...  Done! 
+    Parameter 14...  Done! 
+    Parameter 15...  Done! 
+    Parameter 16...  Done! 
+    Parameter 17...  Done! 
+    Parameter 18...  Done! 
+    Parameter 19...  Done! 
+    Parameter 20...  Done! 
+
+Estimation::marginal density: I'm computing the posterior mean and covariance...  Done!
+Estimation::marginal density: I'm computing the posterior log marginal density (modified harmonic mean)... Done!
+
+
+ESTIMATION RESULTS
+
+Log data density is -2917.582157.
+
+parameters
+                prior mean   post. mean        90% HPD interval    prior       pstdev
+
+alpha                1.000       1.5016      1.0762      1.9741   unif        0.5774
+psi1                 1.100       0.7068      0.6529      0.7598   gamm        0.5000
+psi2                 0.250       0.2110      0.0227      0.3896   gamm        0.1500
+rho_R                0.500       0.6191      0.5932      0.6459   beta        0.2000
+piestar              4.000       3.3029      1.5790      4.9210   gamm        2.0000
+rstar                2.000       1.3747      0.9313      1.8052   gamm        1.0000
+kappa                0.500       0.9683      0.6629      1.2581   gamm        0.3500
+Tau                  2.000       1.5067      1.1595      1.8464   gamm        0.5000
+rho_g                0.700       0.6480      0.4977      0.8016   beta        0.1000
+rho_z                0.700       0.8276      0.7850      0.8704   beta        0.1000
+
+standard deviation of shocks
+                prior mean   post. mean        90% HPD interval    prior       pstdev
+
+e_R                  0.310       0.2355      0.2201      0.2504   invg        0.1600
+e_g                  0.380       0.2550      0.1556      0.3484   invg        0.2000
+e_z                  1.000       1.0333      0.8455      1.2131   invg        0.5200
+e_v                  2.000       2.0400      1.9305      2.1446   invg        0.5000
+
+correlation of shocks
+                prior mean   post. mean        90% HPD interval    prior       pstdev
+
+e_z,e_g              0.000       0.2060     -0.0553      0.4697   norm        0.4000
+e_R,e_g              0.000       0.0075     -0.3161      0.3293   norm        0.4000
+e_z,e_R              0.000      -0.0554     -0.1907      0.0754   norm        0.4000
+e_R,e_v              0.000      -0.0404     -0.1757      0.0942   norm        0.1000
+e_g,e_v              0.000       0.0469     -0.1088      0.2036   norm        0.1000
+e_z,e_v             -0.700      -0.8089     -0.8859     -0.7344   norm        0.1000
+Total computing time : 1h01m12s
+Note: warning(s) encountered in MATLAB/Octave code
